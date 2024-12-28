@@ -102,31 +102,35 @@ To run this project locally, you will need the following:
 	- Resources are in JSON format
 	```json
 	{
-		"temperatureData": [
-		    {
-		      "id": 183897,
-		      "timestamp": "12/28/2024 05:40:20 PM",
-		      "value": 45.226
-		    },
-		    // Additional data omitted for brevity
-		],
-		"pressureData": [
-		    {
-		      "id": 183898,
-		      "timestamp": "12/28/2024 05:40:20 PM",
-		      "value": 48.134
-		    },
-		    // Additional data omitted for brevity
-		],
-		"pumpSettingData": [
-		    {
-		      "id": 183899,
-		      "timestamp": "12/28/2024 05:40:20 PM",
-		      "value": "speed"
-		    },
-		    // Additional data omitted for brevity
-		]
-	}
+        "temperatureData": [
+            {
+              "id": 183897,
+              "timestamp": "12/28/2024 05:40:20 PM",
+              "value": 45.226
+            },
+            
+            // Additional data omitted for brevity
+          ],
+          "pressureData": [
+            {
+              "id": 183898,
+              "timestamp": "12/28/2024 05:40:20 PM",
+              "value": 48.134
+            },
+            
+            // Additional data omitted for brevity
+          ],
+          "pumpSettingData": [
+            {
+              "id": 183899,
+              "timestamp": "12/28/2024 05:40:20 PM",
+              "value": "speed"
+            },
+            
+            // Additional data omitted for brevity
+          ]
+    }
+
 	```
 
 ## Contributing
