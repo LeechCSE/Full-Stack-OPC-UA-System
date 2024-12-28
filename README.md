@@ -24,7 +24,9 @@ The system consists of several key components:
 - **Web Dashboard**: Provides interactive data visualizations, including graphs and trend charts.
 - **API Access**: Exposes data via a REST API for further integration with other systems.
 - **Demo**:
+    - Home page:
 ![HomePage](./images/home.png)
+    - Server dashboard:
 ![Demo](./images/demo.gif)
 
 ## Technologies Used

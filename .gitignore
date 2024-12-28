@@ -1,7 +1,4 @@
 temp/
-client/.vs/
-client/OpcUaClient/bin/
-client/OpcUaClient/obj/
-web-dashboard/.vs
-web-dashboard/bin/
-web-dashboard/obj/
+**/.vs
+**/bin
+**/obj
