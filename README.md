@@ -98,7 +98,36 @@ To run this project locally, you will need the following:
 ## Usage
 
 -   **Dashboard**: View real-time data and trends of the machines.
--   **API**: Access the latest machine data by visiting `http://localhost:5000/api/opcua/water-pump/latest`.
+-   **API**: Access the latest machine data by visiting `https://localhost:7234/api/opcua/water-pump/latest`.
+	- Resources are in JSON format
+	```json
+	{
+		"temperatureData": [
+		    {
+		      "id": 183897,
+		      "timestamp": "12/28/2024 05:40:20 PM",
+		      "value": 45.226
+		    },
+		    ...
+		],
+		"pressureData": [
+		    {
+		      "id": 183898,
+		      "timestamp": "12/28/2024 05:40:20 PM",
+		      "value": 48.134
+		    },
+		    ...
+		],
+		"pumpSettingData": [
+		    {
+		      "id": 183899,
+		      "timestamp": "12/28/2024 05:40:20 PM",
+		      "value": "speed"
+		    },
+		    ...
+		]
+	}
+	```
 
 ## Contributing
 
