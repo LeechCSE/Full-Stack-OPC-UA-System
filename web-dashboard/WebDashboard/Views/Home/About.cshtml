@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Full-Stack OPC UA System Project";
+}
+<h2>@ViewData["Title"]</h2>
+
+<p>Welcome to the Full-Stack OPC UA System project page. This project integrates OPC UA client-server communication, data storage in SQL database, and a web dashboard for monitoring and visualizing the real-time and historical data. Below is an overview of the project, including its components, architecture, and key features.</p>
+
+<h3>Project Overview</h3>
+<img src="~/images/overview.png" alt="OPC UA Full-Stack System Design Diagram" width="95%" />
+<p>The Full-Stack OPC UA Monitoring system is designed to facilitate seamless communication between OPC UA servers and clients, providing real-time data tracking and storage. The OPC UA client browses the server's node structure and reads data, which is then stored in an SQL database. The web dashboard leverages this data to present meaningful insights through interactive visualizations and reports.</p>
+
+<h3>Key Features</h3>
+<ul>
+    <li><strong>OPC UA Client-Server Communication:</strong> The OPC UA client browses the server's node structure and fetches data in real-time. This allows seamless interaction with OPC UA servers installed in machines, such as water pump, hydraulic fracturing machines, etc. In this project, a simulation server in Python is used.</li>
+    <li><strong>SQL Database Integration:</strong> Data fetched from the OPC UA server is stored in an SQL database, ensuring persistent data storage and easy retrieval for analysis.</li>
+    <li><strong>Web Dashboard:</strong> The data is then displayed on a web dashboard, enabling real-time monitoring and visualization of parameters such as temperature, pressure, and pump settings.</li>
+    <li><strong>Real-Time and Historical Data:</strong> Users can view real-time data as well as analyze historical trends to make informed decisions.</li>
+    <li><strong>Data Security:</strong> All data transmitted between the OPC UA client and the server is secured, ensuring confidentiality and integrity of sensitive data.</li>
+</ul>
+
+<h3>Project Architecture</h3>
+<p>The system is structured in a full-stack architecture, comprising three main layers:</p>
+<ul>
+    <li><strong>OPC UA Client:</strong> This component communicates with the OPC UA server, browsing its node structure and reading real-time data such as temperature, pressure, and pump settings.</li>
+    <li><strong>SQL Database:</strong> A relational SQL database is used to store the data retrieved from the OPC UA server. The data is stored with time-stamped entries for easy access and analysis.</li>
+    <li><strong>Web Dashboard:</strong> Built with ASP.NET, the web dashboard fetches data from the SQL database and visualizes it through interactive charts and tables. Users can monitor live data and historical trends.</li>
+</ul>
+
+<h3>How It Works</h3>
+<p>The Full-Stack OPC UA Monitoring system operates in the following manner:</p>
+<ol>
+    <li><strong>Node Browsing:</strong> The OPC UA client connects to the simulation OPC UA server and browses its node structure, retrieving metadata about available nodes.</li>
+    <li><strong>Data Fetching:</strong> The client fetches real-time data from the server, such as temperature, pressure, and pump settings.</li>
+    <li><strong>Data Storage:</strong> The fetched data is stored in a relational SQL database, allowing easy retrieval for analysis.</li>
+    <li><strong>Dashboard Display:</strong> The web dashboard queries the database and displays the data in real-time using interactive charts and tables. Historical data can also be viewed for trend analysis.</li>
+</ol>
+
+<h3>Technology Stack</h3>
+<p>The Full-Stack OPC UA Monitoring project is built using the following technologies:</p>
+<ul>
+    <li><strong>OPC UA:</strong> For communication between the OPC UA client and the simulation server.</li>
+    <li><strong>ASP.NET (Core):</strong> For the web dashboard that displays real-time and historical data.</li>
+    <li><strong>SQL Database:</strong> A relational database like MySQL or SQL Server for storing the fetched data.</li>
+    <li><strong>JavaScript & Chart.js:</strong> For creating interactive charts to visualize the real-time data on the web dashboard.</li>
+    <li><strong>C#:</strong> For the implementation of the OPC UA client and server-side operations.</li>
+</ul>
+
+<h3>Use Cases</h3>
+<p>This project is suitable for various industrial and automation applications, such as:</p>
+<ul>
+    <li><strong>Industrial Automation:</strong> Monitor and control industrial machinery through OPC UA, ensuring real-time data is available for analysis and decision-making.</li>
+    <li><strong>Energy Management:</strong> Track energy usage, temperature, pressure, and system performance in energy plants or facilities.</li>
+    <li><strong>Building Management Systems (BMS):</strong> Integrate the system with building infrastructure to monitor water pumps, HVAC systems, and other critical systems.</li>
+    <li><strong>Process Control Systems:</strong> Provide a comprehensive dashboard for monitoring and controlling processes in factories or plants.</li>
+</ul>
+
+<h3>Future Enhancements</h3>
+<p>Future versions of the Full-Stack OPC UA Monitoring system will include the following enhancements:</p>
+<ul>
+    <li><strong>Advanced Analytics:</strong> Integrating machine learning algorithms for predictive analytics, such as forecasting pump failure or energy consumption patterns.</li>
+    <li><strong>Mobile Application:</strong> A mobile app to allow monitoring and control from smartphones and tablets.</li>
+    <li><strong>Cloud Integration:</strong> Storing historical data in the cloud to ensure scalability and data redundancy for large-scale operations.</li>
+</ul>
+
+<h3>Contact Information</h3>
+<p>If you have any questions or would like more information about the Full-Stack OPC UA Monitoring project, feel free to contact us at <a href="mailto:chanwoo.lee.dev@gmail.com">chanwoo.lee.dev@gmail.com</a>.</p>

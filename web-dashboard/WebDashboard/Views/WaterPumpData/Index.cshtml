@@ -1,0 +1,83 @@
+﻿@model dynamic;
+
+@{
+    ViewData["Title"] = "Water Pump";
+    ViewData["TemperatureData"] = @Html.Raw(Json.Serialize(Model.TemperatureData));
+    ViewData["PressureData"] = @Html.Raw(Json.Serialize(Model.PressureData));
+    ViewData["PumpSettingData"] = @Html.Raw(Json.Serialize(Model.PumpSettingData));
+}
+
+<h2 class="text-center my-4">Server 1: @ViewData["Title"]</h2>
+
+<div class="container">
+    <!-- Status Section -->
+    <div class="card bg-light mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Current Status</h3>
+            <ul class="list-unstyled fs-5">
+                <li><strong>Temperature:</strong> <span id="currentTemperature">Loading...</span> °F</li>
+                <li><strong>Pressure:</strong> <span id="currentPressure">Loading...</span> bar</li>
+                <li><strong>Pump Setting:</strong> <span id="currentPumpSetting">Loading...</span></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Graphs Section -->
+    <canvas id="temperatureChart" class="card px-3 py-2 mb-4" width="800" height="400"></canvas>
+    <canvas id="pressureChart" class="card px-3 py-2 mb-4" width="800" height="400"></canvas>
+    <canvas id="pumpSettingChart" class="card px-3 py-2 mb-4" width="800" height="400"></canvas>
+
+    <!-- Raw Data Table Section -->
+    <div>
+        <h3>Raw Data</h3>
+        @foreach (var dataGroup in new[]
+        {
+        new { Name = "Temperature", Data = Model.TemperatureData },
+        new { Name = "Pressure", Data = Model.PressureData },
+        new { Name = "Pump Setting", Data = Model.PumpSettingData }
+        })
+        {
+            <div class="mb-4">
+                <h4>@dataGroup.Name Data</h4>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>ID</th>
+                                <th>DisplayName</th>
+                                <th>Value</th>
+                                <th>Timestamp</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in dataGroup.Data)
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@dataGroup.Name</td>
+                                    <td>@item.Value</td>
+                                    <td>@item.Timestamp</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="/js/chart.js"></script>
+
+    <script>
+        var temperatureChart = lineChart('temperatureChart', "Temperature", "°F", @ViewData["TemperatureData"]);
+        var pressureChart = lineChart('pressureChart', "Pressure", "bar", @ViewData["PressureData"]);
+        var settingChart = lineChartBinary('pumpSettingChart', "Pump Setting", "", "standard", "speed", @ViewData["PumpSettingData"]);
+
+        setInterval(function() {
+            fetchAndUpdate('/api/opcua/water-pump/latest', temperatureChart, pressureChart, settingChart);
+        }, 1000);
+    </script>
+}

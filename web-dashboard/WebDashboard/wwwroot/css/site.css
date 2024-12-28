@@ -1,0 +1,137 @@
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+    color: var(--bs-secondary-color);
+    text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+    text-align: start;
+}
+
+/* Status Section */
+/*.status-section {
+    margin-bottom: 40px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.status-values ul {
+    list-style-type: none;
+    padding: 0;
+    font-size: 1.4em;
+    color: #333;
+}
+
+.status-values li {
+    margin: 12px 0;
+}
+
+.status-values strong {
+    font-size: 1.2em;
+    color: #555;
+}*/
+
+/* Graphs Section */
+/*.charts-section {
+    margin-bottom: 40px;
+}
+
+.chart-canvas {
+    margin-bottom: 40px;
+}*/
+
+/* Raw Data Table */
+/*.table-section {
+    margin-bottom: 30px;
+}
+
+.table-container {
+    overflow-x: auto;
+    margin-top: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+    .data-table th, .data-table td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .data-table th {
+        background-color: #f2f2f2;
+        color: #555;
+    }*/
+
+/* Misc Styling */
+/*h2, h3, h4 {
+    color: #333;
+    font-weight: normal;
+}
+
+.text-center {
+    text-align: center;
+}*/
+
+/* Server Title */
+/*h2.text-center {
+    margin-bottom: 30px;
+}
+
+.home-nav {
+    text-align: center;
+}
+
+    .home-nav ul {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 30px;
+    }
+
+    .home-nav li {
+        margin-bottom: 15px;
+    }
+
+    .home-nav a {
+        color: #000;
+        text-decoration: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+
+        .home-nav a:hover {
+            color: #007bff;
+        }
+
+.text-center img {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}*/
