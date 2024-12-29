@@ -42,22 +42,19 @@ charts, and trend analysis, for real-time insights.
 - **API Access**: Exposes machine data through a REST API for seamless 
 integration with external systems.
 - **Demo**:
-
-![HomePage](./images/home.png "Home page")
-
-![Demo](./images/demo.gif "Server dashboard")
-
-- The client fetches data from the server every 1 second and stores it in the 
-    database.
-- The web dashboard fetches data from the database every 1 second and updates 
-    the graph in real-time.
-- The default **window size** is set to **1 hour** (i.e. 3600 data points), and 
-    it is customizable.
-- To optimize memory usage, the data undergoes **downsampling** with a 
-    **5-interval** reduction, displaying a total of **17,280 data points** on 
-    the graph.
-- This approach is designed to balance between real-time data updates and memory 
-    efficiency.
+    - Home page ![HomePage](./images/home.png)
+    - Server dashboard ![Demo](./images/demo.gif)
+        - The client fetches data from the server every 1 second and stores it 
+            in the database.
+        - The web dashboard fetches data from the database every 1 second and 
+            updates the graph in real-time.
+        - The default **window size** is set to **1 hour** (i.e. 3600 data 
+            points), and it is customizable.
+        - To optimize memory usage, the data undergoes **downsampling** with a 
+            **5-interval** reduction, displaying a total of 
+            **17,280 data points** on the graph.
+        - This approach is designed to balance between real-time data updates 
+            and memory efficiency.
 
 ## Technologies Used
 
@@ -94,8 +91,9 @@ To run this project locally, you will need the following:
 2. **Setting Up the Database**
 
 -   Install Microsoft SQL Server and create a database (e.g. `OPCUA DB`).
--   Configure your connection string in `ConnectionString in Program.cs of Client.sln` 
-and `appsettings.json in WebDashboard.sln`.
+-   Configure your connection string in 
+    `ConnectionString in Program.cs of Client.sln` and 
+    `appsettings.json in WebDashboard.sln`.
 3.  Example configuration:
 
 - in Program.cs of Client.sln,
@@ -115,7 +113,8 @@ and `appsettings.json in WebDashboard.sln`.
 	- Extract the  **sensor.csv**  file (120MB) located in the ZIP archive.
 	- Run the script (Port  **4840**  needs to be open!)\
 	    `python opc-ua-server.py`  
-	- The OPC UA server simulation code used in this project is based on [opc-ua-sensor-simulator](https://github.com/flopach/opc-ua-sensor-simulator).
+	- The OPC UA server simulation code used in this project is based on 
+    [opc-ua-sensor-simulator](https://github.com/flopach/opc-ua-sensor-simulator).
     Please refer to that repository for additional details on how to set up and 
     run the server.
 
@@ -201,5 +200,6 @@ details.
     development.  
 - **Bootstrap** for its responsive front-end framework, enhancing the web 
     dashboard's UI.  
-- **Florian Pachmair** for the [opc-ua-sensor-simulator](https://github.com/flopach/opc-ua-sensor-simulator), 
+- **Florian Pachmair** for the
+    [opc-ua-sensor-simulator](https://github.com/flopach/opc-ua-sensor-simulator), 
     which served as the foundation for the OPC UA server simulation.  
