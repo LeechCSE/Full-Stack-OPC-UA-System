@@ -42,21 +42,22 @@ charts, and trend analysis, for real-time insights.
 - **API Access**: Exposes machine data through a REST API for seamless 
 integration with external systems.
 - **Demo**:
-    - Home page
-![HomePage](./images/home.png)
-    - Server dashboard
-        - The client fetches data from the server every 1 second and stores it 
-        in the database.
-        - The web dashboard fetches data from the database every 1 second and 
-        updates the graph in real-time.
-        - The default **window size** is set to **1 hour** (i.e. 3600 data 
-        points), and it is customizable.
-        - To optimize memory usage, the data undergoes **downsampling** with a 
-        **5-interval** reduction, displaying a total of **17,280 data points** 
-        on the graph.
-        - This approach is designed to balance between real-time data updates 
-        and memory efficiency.
-![Demo](./images/demo.gif)
+
+![HomePage](./images/home.png "Home page")
+
+![Demo](./images/demo.gif "Server dashboard")
+
+- The client fetches data from the server every 1 second and stores it in the 
+    database.
+- The web dashboard fetches data from the database every 1 second and updates 
+    the graph in real-time.
+- The default **window size** is set to **1 hour** (i.e. 3600 data points), and 
+    it is customizable.
+- To optimize memory usage, the data undergoes **downsampling** with a 
+    **5-interval** reduction, displaying a total of **17,280 data points** on 
+    the graph.
+- This approach is designed to balance between real-time data updates and memory 
+    efficiency.
 
 ## Technologies Used
 
