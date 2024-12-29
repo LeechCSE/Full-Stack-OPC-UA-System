@@ -4,25 +4,29 @@ using WebDashboard.Services;
 namespace WebDashboard.Controllers
 {
     /// <summary>
-    /// Handles water pump data operations, including data retrieval, processing, and insertion.
+    /// Controller for handling water pump data operations, including retrieving, processing, and presenting data.
     /// </summary>
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="WaterPumpDataController"/> class.
+    /// </remarks>
+    /// <param name="databaseService">The service used to interact with the database for retrieving water pump data.</param>
     public class WaterPumpDataController(DatabaseService databaseService) : Controller
     {
-        private readonly DatabaseService _databaseService = databaseService;
-        private const int DataFetchCount = 86400;
+        private const int DataFetchCount = 3600 * 1; // Number of one-second data points.
+        private const int DownsamplingSize = 5; // Number of seconds to average.
 
         /* -------------------- Public Methods -------------------- */
 
         /// <summary>
         /// Renders the main dashboard view with processed water pump data.
         /// </summary>
-        /// <returns>ViewResult for the dashboard page.</returns>
+        /// <returns>A <see cref="Task{IActionResult}"/> representing the asynchronous operation, with the view containing processed data.</returns>
         public async Task<IActionResult> Index() => View(await GetProcessedDataModel(DataFetchCount));
 
         /// <summary>
-        /// Provides the latest water pump data as a JSON response (500 latest data points by default).
+        /// Retrieves the latest water pump data as a JSON response.
         /// </summary>
-        /// <returns>JSON object containing processed water pump data.</returns>
+        /// <returns>A <see cref="Task{IActionResult}"/> representing the asynchronous operation, with the JSON result of the latest data.</returns>
         [HttpGet("api/opcua/water-pump/latest")]
         public async Task<IActionResult> GetLatestData() => Json(await GetProcessedDataModel(DataFetchCount));
 
@@ -31,15 +35,15 @@ namespace WebDashboard.Controllers
         /// <summary>
         /// Retrieves and processes water pump data into a structured model.
         /// </summary>
-        /// <param name="count">The number of data records to fetch from the database.</param>
-        /// <returns>An object containing structured data for the dashboard.</returns>
+        /// <param name="count">The number of data points to fetch from the database.</param>
+        /// <returns>A <see cref="Task{object}"/> representing the asynchronous operation, with an object containing processed data for display.</returns>
         private async Task<object> GetProcessedDataModel(int count)
         {
-            List<WebDashboard.Models.WaterPumpModel> data = await _databaseService.GetLatestData(count);
+            List<WebDashboard.Models.WaterPumpModel> data = await databaseService.GetLatestData(count);
 
-            var temperatureData = DownsampleData(ProcessData(data, "temperature", true), 30);
-            var pressureData = DownsampleData(ProcessData(data, "pressure", true), 30);
-            var pumpsettingData = DownsampleData(ProcessData(data, "pumpsetting", false), 30);
+            var temperatureData = DownsampleData(ProcessData(data, "temperature"), DownsamplingSize);
+            var pressureData = DownsampleData(ProcessData(data, "pressure"), DownsamplingSize);
+            var pumpsettingData = DownsampleData(ProcessData(data, "pumpsetting", false), DownsamplingSize, "majority");
 
             return new
             {
@@ -50,38 +54,75 @@ namespace WebDashboard.Controllers
         }
 
         /// <summary>
-        /// Filters and formats water pump data for a specific type (e.g. temperature, pressure).
+        /// Processes raw water pump data based on the specified display name.
         /// </summary>
-        /// <param name="data">The raw water pump data.</param>
-        /// <param name="displayName">The data type to filter (e.g. "temperature").</param>
-        /// <param name="roundValues">Indicates whether to round numeric values to 3 decimal places.</param>
-        /// <returns>A list of formatted data objects.</returns>
-        private static List<object> ProcessData(List<WebDashboard.Models.WaterPumpModel> data, string displayName, bool roundValues)
+        /// <param name="data">The raw data to be processed.</param>
+        /// <param name="displayName">The display name used to filter the data.</param>
+        /// <param name="roundValues">A flag indicating whether the numeric values should be rounded to three decimal places. Defaults to true.</param>
+        /// <returns>A list of processed water pump models.</returns>
+        private static List<WebDashboard.Models.WaterPumpModel> ProcessData(List<WebDashboard.Models.WaterPumpModel> data, string displayName, bool roundValues = true)
         {
             return data
                 .Where(d => d.DisplayName == displayName)
-                .Select(d => (object)new
+                .Select(d => new WebDashboard.Models.WaterPumpModel
                 {
-                    d.Id,
-                    Timestamp = d.Timestamp.ToString(),
-                    Value = roundValues ? (object)Math.Round(double.Parse(d.Value ?? "0.0"), 3) : d.Value
+                    Id = d.Id,
+                    Timestamp = d.Timestamp,
+                    DisplayName = d.DisplayName,
+                    Value = roundValues ? Math.Round(double.Parse(d.Value ?? "0.0"), 3).ToString() : d.Value
                 })
                 .ToList();
         }
 
         /// <summary>
-        /// Downsamples the data to a specified interval.
+        /// Downsamples the data by averaging or taking the majority value for each interval.
         /// </summary>
-        /// <param name="data">The data to downsample.</param>
-        /// <param name="interval">The interval for grouping data points.</param>
-        /// <returns>Downsampled data list.</returns>
-        private static List<object> DownsampleData(List<object> data, int interval)
+        /// <param name="data">The data to be downsampled.</param>
+        /// <param name="interval">The interval (in number of data points) for downsampling.</param>
+        /// <param name="averageOrMajority">Specifies whether to use "average" for numerical values or "majority" for string values.</param>
+        /// <returns>A list of downsampled water pump models.</returns>
+        /// <exception cref="ArgumentException">Thrown when an invalid value is passed for the 'averageOrMajority' parameter.</exception>
+        private static List<WebDashboard.Models.WaterPumpModel> DownsampleData(List<WebDashboard.Models.WaterPumpModel> data, int interval, string averageOrMajority = "average")
         {
-            var downsampled = new List<object>();
+            List<WebDashboard.Models.WaterPumpModel> downsampled = new List<WebDashboard.Models.WaterPumpModel>();
+
             for (int i = 0; i < data.Count; i += interval)
             {
-                downsampled.Add(data[i]);
+                var dataSlice = data.Skip(i).Take(interval).ToList();
+
+                if (averageOrMajority == "average")
+                {
+                    var averageValue = dataSlice
+                        .Where(d => double.TryParse(d.Value, out _))
+                        .Average(d => double.Parse(d.Value ?? "0.0"));
+
+                    downsampled.Add(new WebDashboard.Models.WaterPumpModel
+                    {
+                        Timestamp = dataSlice.Last().Timestamp,
+                        DisplayName = dataSlice.First().DisplayName,
+                        Value = Math.Round(averageValue, 3).ToString()
+                    });
+                }
+                else if (averageOrMajority == "majority")
+                {
+                    var majorityValue = dataSlice
+                        .GroupBy(d => d.Value)
+                        .OrderByDescending(g => g.Count())
+                        .First().Key;
+
+                    downsampled.Add(new WebDashboard.Models.WaterPumpModel
+                    {
+                        Timestamp = dataSlice.Last().Timestamp,
+                        DisplayName = dataSlice.First().DisplayName,
+                        Value = majorityValue
+                    });
+                }
+                else
+                {
+                    throw new ArgumentException("Invalid value for 'averageOrMajority'. Expected 'average' or 'majority'.");
+                }
             }
+
             return downsampled;
         }
     }

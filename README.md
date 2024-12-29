@@ -45,6 +45,17 @@ integration with external systems.
     - Home page
 ![HomePage](./images/home.png)
     - Server dashboard
+        - The client fetches data from the server every 1 second and stores it 
+        in the database.
+        - The web dashboard fetches data from the database every 1 second and 
+        updates the graph in real-time.
+        - The default **window size** is set to **1 hour** (i.e. 3600 data 
+        points), and it is customizable.
+        - To optimize memory usage, the data undergoes **downsampling** with a 
+        **5-interval** reduction, displaying a total of **17,280 data points** 
+        on the graph.
+        - This approach is designed to balance between real-time data updates 
+        and memory efficiency.
 ![Demo](./images/demo.gif)
 
 ## Technologies Used
@@ -113,18 +124,20 @@ and `appsettings.json in WebDashboard.sln`.
     - Build and run the project.
 6.  **Run the Web Application**
     
-    -   Open the solution, `web-dashboard/WebDashboard.sln`.
-    -   Build and run the project.
-    -   Open a browser and navigate to `https://localhost:7234/` to access the 
-    web dashboard.
+    - Open the solution, `web-dashboard/WebDashboard.sln`.
+    - Build and run the project.
+    - Open a browser and navigate to `https://localhost:7234/` to access the web 
+        dashboard.
 7.  **Test the System**
     
-    -   Open the web dashboard and verify that machine data is being displayed correctly.
+    - Open the web dashboard and verify that machine data is being displayed 
+        correctly.
 
 ## Usage
 
 -   **Dashboard**: View real-time data and trends of the machines.
--   **API**: Access the latest 5000 machine data points via `https://localhost:7234/api/opcua/water-pump/latest`.
+-   **API**: Access the latest machine data via 
+    `https://localhost:7234/api/opcua/water-pump/latest`.
 	- Resources are in JSON format as the following:
 	```json
 	{
@@ -161,7 +174,8 @@ and `appsettings.json in WebDashboard.sln`.
 
 ## Contributing
 
-We welcome contributions to this project! If you'd like to contribute, please fork the repository and submit a pull request with your changes.
+We welcome contributions to this project! If you'd like to contribute, please 
+fork the repository and submit a pull request with your changes.
 
 ### Steps to Contribute:
 
@@ -174,12 +188,17 @@ We welcome contributions to this project! If you'd like to contribute, please fo
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the LICENSE file for 
+details.
 
 
 ## Acknowledgments
 
-- **OPC Foundation** for providing the OPC UA standard, the core communication protocol for this project.  
-- **Microsoft** for developing .NET, which enabled seamless application development.  
-- **Bootstrap** for its responsive front-end framework, enhancing the web dashboard's UI.  
-- **Florian Pachmair** for the [opc-ua-sensor-simulator](https://github.com/flopach/opc-ua-sensor-simulator), which served as the foundation for the OPC UA server simulation.  
+- **OPC Foundation** for providing the OPC UA standard, the core communication 
+    protocol for this project.  
+- **Microsoft** for developing .NET, which enabled seamless application 
+    development.  
+- **Bootstrap** for its responsive front-end framework, enhancing the web 
+    dashboard's UI.  
+- **Florian Pachmair** for the [opc-ua-sensor-simulator](https://github.com/flopach/opc-ua-sensor-simulator), 
+    which served as the foundation for the OPC UA server simulation.  
