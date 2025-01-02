@@ -6,14 +6,20 @@ namespace WebDashboard.Controllers
     /// <summary>
     /// Controller for handling water pump data operations, including retrieving, processing, and presenting data.
     /// </summary>
-    /// <remarks>
-    /// Initializes a new instance of the <see cref="WaterPumpDataController"/> class.
-    /// </remarks>
-    /// <param name="databaseService">The service used to interact with the database for retrieving water pump data.</param>
-    public class WaterPumpDataController(DatabaseService databaseService) : Controller
+    public class WaterPumpDataController : Controller
     {
         private const int DataFetchCount = 3600 * 1; // Number of one-second data points.
         private const int DownsamplingSize = 5; // Number of seconds to average.
+        private readonly DatabaseService _databaseService;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WaterPumpDataController"/> class.
+        /// </summary>
+        /// <param name="_databaseService">The service used to interact with the database for retrieving water pump data.</param>
+        public WaterPumpDataController(DatabaseService databaseService)
+        {
+            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+        }
 
         /* -------------------- Public Methods -------------------- */
 
@@ -39,7 +45,7 @@ namespace WebDashboard.Controllers
         /// <returns>A <see cref="Task{object}"/> representing the asynchronous operation, with an object containing processed data for display.</returns>
         private async Task<object> GetProcessedDataModel(int count)
         {
-            List<WebDashboard.Models.WaterPumpModel> data = await databaseService.GetLatestData(count);
+            List<WebDashboard.Models.WaterPumpModel> data = await _databaseService.GetLatestData(count);
 
             var temperatureData = DownsampleData(ProcessData(data, "temperature"), DownsamplingSize);
             var pressureData = DownsampleData(ProcessData(data, "pressure"), DownsamplingSize);

@@ -39,7 +39,7 @@ namespace WebDashboard.Services
         /// <returns>A list of <see cref="WaterPumpModel"/> containing the latest water pump data.</returns>
         public async Task<List<WaterPumpModel>> GetLatestData(int count = int.MaxValue)
         {
-            List<WaterPumpModel> result = [];
+            List<WaterPumpModel> result = new List<WaterPumpModel>();
 
             using (var connection = new SqlConnection(_connectionString))
             {

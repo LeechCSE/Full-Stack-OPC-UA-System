@@ -9,14 +9,26 @@ namespace OpcUaClient
     /// Represents an OPC UA client that connects to an OPC UA server, browses server nodes,
     /// and inserts data into a database.
     /// </summary>
-    /// <remarks>
-    /// Initializes a new instance of the Client class.
-    /// </remarks>
-    /// <param name="session">The OPC UA session used to interact with the server</param>
-    /// <param name="connectionString">The connection string to the SQL database</param>
-    /// <param name="logger">The logger instance for logging messages</param>
-    public class Client(Session session, string connectionString, ILogger logger)
+    public class Client
     {
+        private readonly Session _session;
+        private readonly string _connectionString;
+        private readonly ILogger _logger;
+
+        /// <summary>
+        /// Initializes a new instance of the Client class.
+        /// </summary>
+        /// <param name="session">The OPC UA session used to interact with the server</param>
+        /// <param name="connectionString">The connection string to the SQL database</param>
+        /// <param name="logger">The logger instance for logging messages</param>
+        /// <exception cref="ArgumentNullException"></exception>
+        public Client(Session session, string connectionString, ILogger logger)
+        {
+            _session = session ?? throw new ArgumentNullException(nameof(session));
+            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
+
         /* -------------------- Public Methods -------------------- */
 
         /// <summary>
@@ -27,11 +39,11 @@ namespace OpcUaClient
         /// <returns>A list of reference descriptions representing the child nodes</returns>
         public List<ReferenceDescription> GetServerChildNodes(NodeId startNodeId, bool verbose = false)
         {
-            List<ReferenceDescription> nodes = [];
+            List<ReferenceDescription> nodes = new List<ReferenceDescription>();
 
             try
             {
-                session.Browse(
+                _session.Browse(
                     null,                                               // RequestHeader: default null
                     null,                                               // ViewDescription: default null
                     startNodeId,                                        // Starting node
@@ -46,7 +58,7 @@ namespace OpcUaClient
 
                 if (verbose)
                 {
-                    logger.LogInformation("Browsed Nodes:");
+                    _logger.LogInformation("Browsed Nodes:");
                 }
 
                 foreach (var reference in references)
@@ -58,7 +70,7 @@ namespace OpcUaClient
 
                     if (verbose)
                     {
-                        logger.LogInformation("NodeId: {NodeId} BrowseName: {BrowseName} DisplayName: {DisplayName}",
+                        _logger.LogInformation("NodeId: {NodeId} BrowseName: {BrowseName} DisplayName: {DisplayName}",
                             reference.NodeId, reference.BrowseName, reference.DisplayName);
                     }
 
@@ -67,7 +79,7 @@ namespace OpcUaClient
             }
             catch (Exception e)
             {
-                logger.LogInformation("Error during browsing: {ErrorMessage}", e.Message);
+                _logger.LogInformation("Error during browsing: {ErrorMessage}", e.Message);
             }
 
             return nodes;
@@ -82,7 +94,7 @@ namespace OpcUaClient
         {
             try
             {
-                using SqlConnection connection = new SqlConnection(connectionString);
+                using SqlConnection connection = new SqlConnection(_connectionString);
                 connection.Open();
 
                 string query = @"INSERT 
@@ -98,11 +110,11 @@ namespace OpcUaClient
                     command.ExecuteNonQuery();
                 }
 
-                logger.LogInformation("Data inserted into DB: {DisplayName} = {Value}", displayName, value);
+                _logger.LogInformation("Data inserted into DB: {DisplayName} = {Value}", displayName, value);
             }
             catch (Exception e)
             {
-                logger.LogError("Error inserting data into DB: {ErrorMessage}", e.Message);
+                _logger.LogError("Error inserting data into DB: {ErrorMessage}", e.Message);
             }
         }
 
@@ -118,7 +130,7 @@ namespace OpcUaClient
         {
             try
             {
-                session.Browse(
+                _session.Browse(
                     null,                                               // RequestHeader: default null
                     null,                                               // ViewDescription: default null
                     parentNodeId,                                       // Starting node: parent node
@@ -135,7 +147,7 @@ namespace OpcUaClient
                 {
                     if (verbose)
                     {
-                        logger.LogInformation("\tChildNodeId: {NodeId} BrowseName: {BrowseName} DisplayName: {DisplayName}",
+                        _logger.LogInformation("\tChildNodeId: {NodeId} BrowseName: {BrowseName} DisplayName: {DisplayName}",
                             childReference.NodeId, childReference.BrowseName, childReference.DisplayName);
                     }
 
@@ -144,7 +156,7 @@ namespace OpcUaClient
             }
             catch (Exception e)
             {
-                logger.LogError("Error inserting data into DB: {ErrorMessage}", e.Message);
+                _logger.LogError("Error inserting data into DB: {ErrorMessage}", e.Message);
             }
         }
     }
