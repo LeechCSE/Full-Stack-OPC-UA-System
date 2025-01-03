@@ -104,6 +104,7 @@ namespace WebDashboard.Controllers
 
                     downsampled.Add(new WebDashboard.Models.WaterPumpModel
                     {
+                        Id = dataSlice.Last().Id,
                         Timestamp = dataSlice.Last().Timestamp,
                         DisplayName = dataSlice.First().DisplayName,
                         Value = Math.Round(averageValue, 3).ToString()
@@ -118,6 +119,7 @@ namespace WebDashboard.Controllers
 
                     downsampled.Add(new WebDashboard.Models.WaterPumpModel
                     {
+                        Id = dataSlice.Last().Id,
                         Timestamp = dataSlice.Last().Timestamp,
                         DisplayName = dataSlice.First().DisplayName,
                         Value = majorityValue
